@@ -1,0 +1,36 @@
+[
+	{
+		"id" : 4142,
+		"user_id" : 2,
+		"bot_id" : 142,
+		"bot_name" : "Social Media Post",
+		"_id" : "6882a5c74b8292f00829bce4",
+		"key" : "4648035a-7d35-46a4-b8e0-2367f0c471ae",
+		"message_assistant_count" : 0,
+		"message_assistant" : "Hi there! 👋 Please provide a topic or article that you want your post to be about.",
+		"message_user_count" : 0,
+		"message_user" : null,
+		"fields" : "a:2:{i:0;s:7:\"message\";i:1;s:14:\"uploaded_files\";}",
+		"inputs" : null,
+		"response_code" : "",
+		"created_at" : "2025-10-17 15:08:09",
+		"updated_at" : "2025-10-17 15:08:09"
+	},
+	{
+		"id" : 4143,
+		"user_id" : 2,
+		"bot_id" : 142,
+		"bot_name" : "Social Media Post",
+		"_id" : "6882a5c74b8292f00829bce4",
+		"key" : "4648035a-7d35-46a4-b8e0-2367f0c471ae",
+		"message_assistant_count" : 1,
+		"message_assistant" : "_Searching..._  \n\n_Finished Analysis._  \n\n### LinkedIn\nAre you harnessing the power of AI in financial advising?  \nAI is transforming the way we analyze data, assess market trends, and deliver personalized advice—all while enhancing efficiency for both advisors and clients. However, it’s essential to remember that technology supplements—not replaces—the human touch in understanding your unique financial goals. Past performance does not guarantee future results.  \n\nWhat’s your take on this? Let’s connect in the comments.  \n#FinancialAdvising #AIinFinance #WealthStrategies #SmartFinance\n\n### Facebook\nAI is making waves in financial advising by helping advisors crunch data faster and tailor advice to your unique needs. It’s a powerful tool for analyzing trends and improving efficiency—but remember, it complements expert insight, it doesn’t replace it. Past performance does not guarantee future results.  \n\nLike if this resonates and tag someone who should see how AI is shaping finance!  \n#FinancialAdvising\n\n### Twitter/X\nAI is reshaping financial advising by enhancing data analysis &amp; personalized advice. But technology is a tool—your financial strategy still needs human insight. Past performance does not guarantee future results.  \nDM me if you want to discuss more.  \n#FinancialAdvising #AIinFinance #SmartFinance\n\n### Instagram\nAre you staying ahead with AI in financial advising? 🤖💼  \n• AI helps analyze trends for smarter insights  \n• It enhances efficiency but supports—never replaces—the human touch  \n• Always remember: Past performance does not guarantee future results  \nComment “AI” if you’re curious to learn more about blending tech with financial expertise! 📩  \n#FinancialAdvising #AIinFinance #SmartInvesting #TechAndFinance #ModernMoney #WealthStrategies #InvestmentTools #AdvisorInsight",
+		"message_user_count" : 0,
+		"message_user" : "ai in financial advising",
+		"fields" : "a:2:{i:0;s:7:\"message\";i:1;s:14:\"uploaded_files\";}",
+		"inputs" : "a:5:{i:0;a:2:{s:4:\"name\";s:3:\"_id\";s:8:\"contents\";s:24:\"6882a5c74b8292f00829bce4\";}i:1;a:2:{s:4:\"name\";s:6:\"stream\";s:8:\"contents\";s:4:\"true\";}i:2;a:2:{s:4:\"name\";s:19:\"message.assistant.0\";s:8:\"contents\";s:85:\"Hi there! 👋 Please provide a topic or article that you want your post to be about.\";}i:3;a:2:{s:4:\"name\";s:14:\"message.user.0\";s:8:\"contents\";s:24:\"ai in financial advising\";}i:4;a:2:{s:4:\"name\";s:19:\"uploaded_files.text\";s:8:\"contents\";s:1250:\" \n\n {\"voice\":[\"direct\",\"clear\",\"approachable\"],\"tone\":[],\"pacing\":\"medium-balanced\",\"sentence_structure\":\"options\",\"emotional_impact\":[\"empowered\",\"respected\"],\"vocabulary_level\":null,\"greeting\":\"Hi [Name],\",\"sign_off\":\"Talk to you soon!\",\"call_to_action_style\":null,\"default_pov\":null,\"formatting\":null,\"preferred_phrases\":null,\"avoid_phrases\":\"Limited time offer, let's unpack this\",\"writing_sample\":\"Hi\\u00a0James,\\n\\nIt was great talking with you! To get started with SocialLead, click on one of the payment links below. No payment is processed until after your onboarding is complete.\\n\\nhttps:\\/\\/www.sociallead.io\\/new-york-life#pricing\\n\\nThe link will take you to a site where...\\n1. We collect your payment information. You will not be charged until your onboarding is complete.\\n2. You will then be directed to schedule your onboarding meeting.\\nYou will also need to subscribe to Sales Navigator Core. We can do that during your scheduled onboarding.\\n\\nWe\\u2019re looking forward to getting you set up and start building your pipeline! Let us know if you have additional questions.\\n\\nTalk to you soon!\",\"punctuation_rules\":{\"avoid\":\"Excessive use em-dashes\"},\"channel_specific\":{\"social_post\":{\"vocabulary_level_add\":\"Conversational\"}}}\";}}",
+		"response_code" : "",
+		"created_at" : "2025-10-17 15:08:09",
+		"updated_at" : "2025-10-17 15:08:09"
+	}
+]

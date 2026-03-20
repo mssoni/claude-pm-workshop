@@ -1,0 +1,19 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="white" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="7" fill="url(#bg)"/>
+  <rect width="32" height="32" rx="7" fill="url(#shine)"/>
+  <path d="M8 11.5C8 10.1193 9.11929 9 10.5 9H15V14H10.5C9.11929 14 8 12.8807 8 11.5Z" fill="white"/>
+  <path d="M8 20.5C8 19.1193 9.11929 18 10.5 18H15V23H10.5C9.11929 23 8 21.8807 8 20.5Z" fill="white" fill-opacity="0.7"/>
+  <path d="M17 9H21.5C22.8807 9 24 10.1193 24 11.5C24 12.8807 22.8807 14 21.5 14H17V9Z" fill="white" fill-opacity="0.85"/>
+  <path d="M17 18H21.5C22.8807 18 24 19.1193 24 20.5C24 21.8807 22.8807 23 21.5 23H17V18Z" fill="white" fill-opacity="0.55"/>
+  <rect x="15" y="14" width="2" height="4" fill="white" fill-opacity="0.4"/>
+</svg>
