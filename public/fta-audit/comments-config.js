@@ -1,2 +1,1 @@
-// Optional: enable live comments by filling in a Supabase project (anon/publishable key, RLS insert+select on the table).
-// window.FTA_COMMENTS = { url: 'https://<project>.supabase.co', key: '<anon-key>', table: 'prototype_comments', route: 'fta-audit' };
+window.FTA_COMMENTS = { url: 'https://fwbgaljxxgkqirvvxcas.supabase.co', key: 'sb_publishable_luKF9U88g2yokEreoqeFBQ_eXPue6SZ', table: 'prototype_comments', page: 'fta-audit-2026-08' };
