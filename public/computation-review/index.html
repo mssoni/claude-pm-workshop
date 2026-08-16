@@ -2,7 +2,7 @@
 :root{--bg:#f6f7f9;--card:#fff;--ink:#17202f;--muted:#5d6879;--line:#e2e6ee;--accent:#0f5fb4;--accent2:#e8f0fb;--warn:#b45309;--bad:#b91c1c;--good:#15803d;--chip:#eef1f6;--side:#0b1f3a}
 *{box-sizing:border-box}html,body{height:100%}body{margin:0;font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);display:flex}
 a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}code{font:12.5px/1.4 ui-monospace,Menlo,monospace;background:var(--chip);padding:1px 4px;border-radius:4px}
-aside{width:310px;flex:none;background:var(--side);color:#dbe4f3;height:100vh;position:sticky;top:0;overflow-y:auto;padding:18px 14px;display:flex;flex-direction:column;gap:4px}
+aside{width:310px;background:var(--side);color:#dbe4f3;position:fixed;left:0;top:0;bottom:0;overflow-y:auto;overscroll-behavior:contain;padding:18px 14px;display:flex;flex-direction:column;gap:4px;scrollbar-width:thin;scrollbar-color:#3a5a8c #0b1f3a}aside::-webkit-scrollbar{width:8px}aside::-webkit-scrollbar-thumb{background:#3a5a8c;border-radius:4px}
 aside h1{font-size:15px;margin:0 0 2px;color:#fff;font-weight:650;line-height:1.3}aside .sub{font-size:12px;color:#9fb1cc;margin-bottom:8px}
 aside .grp{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#8ea2c2;margin:12px 6px 3px}
 aside .grp.sub2{margin:7px 6px 2px 6px;color:#7d93b6;text-transform:none;letter-spacing:0;font-size:11.5px;font-style:italic}
@@ -12,7 +12,7 @@ aside a.nav.cell{padding:5px 9px 5px 30px;position:relative}aside a.nav.cell .b{
 aside a.nav.cell.done .b{background:var(--good)}
 aside .prog{margin:8px 6px;font-size:12px;color:#c9d8f0}aside .prog .bar{height:6px;background:#1c3660;border-radius:4px;overflow:hidden;margin-top:4px}aside .prog .bar i{display:block;height:100%;background:#22c55e;width:0}
 aside .cst{margin-top:auto;font-size:11.5px;color:#9fb1cc;padding:8px 6px;border-top:1px solid #1c3660}
-main{flex:1;min-width:0;padding:22px 34px 90px;max-width:1120px}
+main{flex:1;min-width:0;padding:22px 34px 90px;max-width:1120px;margin-left:310px}
 .view{display:none}.view.on{display:block}
 h2{font-size:22px;margin:0 0 6px;font-weight:660}h3{font-size:15px;margin:18px 0 6px;font-weight:650;color:#0f2b52}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0;box-shadow:0 1px 2px rgba(16,24,40,.04)}
@@ -121,7 +121,10 @@ function render(){
   D.sections.slice(3).forEach(([id,name,desc])=>{ nav+=`<a class="nav" data-view="${id}" href="#${id}">${esc(name)}<span class="d">${esc(desc)}</span></a>`; });
   $('#nav').innerHTML=nav;
   // views
-  let v=`<section class="view" id="v-start"><h2>Start here</h2><div class="card">
+  let v=`<section class="view" id="v-start"><h2>Start here</h2>
+  <div class="card" style="border-left:4px solid #b7791f;background:#fff9ec"><p style="margin:0"><b>Why you are seeing this tonight (context from Mayuresh).</b> Today we ruled that every <b>adjustment amount</b> the preparer plots on the return's adjustment tabs (transfer-pricing, foreign PE, transitional relief, and every other adjustment line) should flow into its computation cell <b>pre-filled but editable</b> — the preparer sees the number the return implies, and can overtype it. Before any of that is wired we need YOUR word cell by cell, because the computation golden vectors are locked and this touches money. Two things sit behind this page: (1) the built Computation screen as it renders today (the 30 cells — most already correct, some fed by schedules already ratified this week, a few open); (2) the <b>mapping proposal</b> — 28 questions where a return line has no ruled destination or where auto-mapping would collide with something you already ruled (e.g. RULING 124 kept F13b preparer-owned; auto-mapping TP would reverse it — your call). Answer what you can tonight; skip what needs a call — every unanswered item stays open, nothing is assumed.</p></div>
+  <div class="card" style="border-left:4px solid #6b7280;background:#f6f7f9"><p style="margin:0" class="small"><b>Scope guard — V1 only.</b> Anything that belongs to Phase 2 (Tax Group persona, consolidated filing, and the Annexure-A / SAL-116 deferrals) is out of scope for build regardless of comments here; where a cell touches such a case it is marked. Comments on Phase-2 items are recorded, not built.</p></div>
+  <div class="card">
   <p><b>What this is.</b> A top-to-bottom transcription of our built <b>Computation of Income</b> screen (<code>${esc(D.meta.screen)}</code>) — one card per line the preparer sees, in render order, with the exact logic behind each cell and a real screenshot to point at. It is built from the code we ship (build ${esc(D.meta.build)}), not a prototype. Your job: for each cell, say whether the logic is <b>right</b>, where it should <b>come from</b>, and whether it should be <b>read-only or editable</b>.</p>
   <h3>The three questions on every cell</h3>
   <div class="blk"><div class="k">1 · Correct?</div><div class="val">Is the logic behind the cell right — or wrong (say how)?</div>
