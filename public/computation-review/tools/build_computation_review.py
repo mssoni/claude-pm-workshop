@@ -49,8 +49,8 @@ captions = {k: v for k, v in IMG_CAPTIONS.items() if have(k)}
 all_imgs = [k for k in IMG_CAPTIONS if have(k)]
 
 data = dict(
-    meta=dict(date='2026-08-16', screen='/staff/filings/:id/computation',
-              build='origin/main b20c8d4e (COI engine byte-identical across the UI gap)',
+    meta=dict(date='2026-08-20 (v2 — your 17-18 Aug answers fed in)', screen='/staff/filings/:id/computation',
+              build='origin/main fe853fc0, 20-Aug (money wave M1-M4 live; screenshots = the 16-Aug build)',
               src1='computation-screen-replica-2026-08-16.md', src2='return-to-computation-mapping-table-2026-08-16.md'),
     cells=CELLS, cellQcorrect=CELL_Q_CORRECT, cellQmode=CELL_Q_MODE,
     decisions=MAP_DECISIONS, mapgroups=MAP_GROUPS, bands=BANDS,
@@ -77,6 +77,10 @@ main{flex:1;min-width:0;padding:22px 34px 90px;max-width:1120px}
 .view{display:none}.view.on{display:block}
 h2{font-size:22px;margin:0 0 6px;font-weight:660}h3{font-size:15px;margin:18px 0 6px;font-weight:650;color:#0f2b52}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0;box-shadow:0 1px 2px rgba(16,24,40,.04)}
+.val.upd{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:8px 10px}
+.val.ruled{background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:8px 10px}
+.k.kupd{color:#b45309}.k.kruled{color:#15803d}
+aside a.nav.cell.ruled .b{background:#15803d}
 .chip{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12.5px;font-weight:600;background:var(--chip);color:var(--ink);white-space:nowrap}
 .chip.ro{background:#e5e7eb;color:#374151}.chip.ed{background:#dcfce7;color:var(--good)}.chip.warn{background:#fef3c7;color:var(--warn)}.chip.fz{background:#ede9fe;color:#5b21b6}.chip.cls{background:#e0e7ff;color:#3730a3}
 .imp{background:#fee2e2;color:var(--bad)}.imp.m{background:#fef3c7;color:var(--warn)}.imp.l{background:#e5e7eb;color:#374151}
@@ -142,9 +146,9 @@ function wire(){ $$('.callbox').forEach(box=>{ const anchor=box.dataset.anchor, 
     if(kind==='cell'){$$('.scf,textarea',box).forEach(f=>f.value='');} else {$('textarea',box).value='';}
     $('.saved',box).textContent=ok?'Saved to the shared database ✓':'Saved on this device ✓ (will sync / export)'; if(ok) await remoteFetch(); renderC(anchor,list); status(); markDone(); }); }); }
 function answeredSet(){ return new Set([...remote.map(c=>c.anchor),...loadLocal().map(c=>c.anchor)]); }
-function markDone(){ const A=answeredSet(); let n=0; const total=D.cells.length+D.decisions.length;
+function markDone(){ const A=answeredSet(); let n=0; const total=D.cells.length+D.decisions.filter(d=>!d.answered).length;
   D.cells.forEach(c=>{const on=A.has('cell:'+c.id); if(on)n++; const a=$(`a.nav[data-view="cell-${c.id}"]`); a&&a.classList.toggle('done',on);});
-  D.decisions.forEach(d=>{const on=A.has('map:'+d.id); if(on)n++; const a=$(`a.nav[data-view="map-${d.id}"]`); a&&a.classList.toggle('done',on);});
+  D.decisions.forEach(d=>{const on=A.has('map:'+d.id); if(on&&!d.answered)n++; const a=$(`a.nav[data-view="map-${d.id}"]`); a&&a.classList.toggle('done',on);});
   const p=$('#prog'); if(p){p.querySelector('span').textContent=`${n} of ${total} answered`; p.querySelector('i').style.width=(100*n/total)+'%';} }
 function exportAll(){ const a=[...remote.map(c=>({anchor:c.anchor,who:c.commenter,choice:c.choice,text:c.body,when:c.created_at})),...loadLocal().filter(c=>!c.synced)]; const lines=['# Computation review — answers export','','Exported: '+new Date().toISOString(),'']; a.forEach(c=>lines.push(`- **${c.anchor}** · ${c.who} · ${c.when}${c.choice?' · **'+c.choice+'**':''}\n  ${(c.text||'').replace(/\n/g,'\n  ')}`)); const txt=lines.join('\n')+'\n\n```json\n'+JSON.stringify(a,null,1)+'\n```\n'; const blob=new Blob([txt],{type:'text/markdown'}); const u=URL.createObjectURL(blob); const l=document.createElement('a'); l.href=u; l.download='computation-review-answers-'+new Date().toISOString().slice(0,10)+'.md'; document.body.appendChild(l); l.click(); l.remove(); navigator.clipboard&&navigator.clipboard.writeText(txt).catch(()=>{}); alert('Answers exported (downloaded + copied). Please send the file to Mayuresh.'); }
 // ---- views ----
@@ -158,6 +162,7 @@ function cellView(c,i){ const cells=D.cells; const prev=cells[i-1],next=cells[i+
   <div class="k">Today's treatment <span>what the build does now</span></div><div class="val today">${modeChip(c.mode_today)}</div>
   <div class="k">What it does <span>in plain words</span></div><div class="val logic">${md(c.logic)}</div>
   <div class="k">Feeds in / out <span>return lines & downstream</span></div><div class="val feeds"><b>In:</b> ${md(c.feeds_in)}<br><b>Out:</b> ${md(c.feeds_out)}</div>
+  ${c.update?`<div class="k kupd">Since 16-Aug</div><div class="val upd">${md(c.update)}</div>`:''}
   ${c.open?`<div class="k">Known open question</div><div class="val open">${md(c.open)}</div>`:''}
  </div>${shotsBlock(imgs)}<div class="foot">Source: <code>${esc(c.src)}</code> · computation-screen-replica-2026-08-16.md</div>
  <div class="q"><div class="qq">Your call — three questions</div>${cellbox('cell:'+c.id,bandName)}</div></div>
@@ -169,8 +174,10 @@ function mapView(d,i){ const ds=D.decisions; const prev=ds[i-1],next=ds[i+1]; co
   <div class="k">The line</div><div class="val">${md(d.line)}</div>
   <div class="k">Today <span>what the build does</span></div><div class="val today">${md(d.today)}</div>
   <div class="k">Hint / precedent</div><div class="val feeds">${md(d.hint)}</div>
+  ${d.update?`<div class="k kupd">Since 16-Aug</div><div class="val upd">${md(d.update)}</div>`:''}
+  ${d.answered?`<div class="k kruled">Already ruled ✓</div><div class="val ruled">${md(d.answered)}</div>`:''}
  </div><div class="foot">Source: <code>${esc(d.src)}</code> · return-to-computation-mapping-table-2026-08-16.md</div>
- <div class="q"><div class="qq">Your call</div><p>${md(d.question)}</p>${callbox('map:'+d.id,gname,'Answer',d.options)}</div></div>
+ ${d.answered?`<div class="q"><div class="qq">No answer needed</div><p class="small muted">This one is settled by your own answer above — it is shown so nothing moves without you seeing it. Comment only if you disagree.</p>${callbox('map:'+d.id,gname,'Comment (only if you disagree)',["I disagree — reopen (say why below)"])}</div>`:`<div class="q"><div class="qq">Your call</div><p>${md(d.question)}</p>${callbox('map:'+d.id,gname,'Answer',d.options)}</div>`}</div>
  <div class="pager">${prev?`<button class="btn sec" onclick="go('map-${prev.id}')">← Prev</button>`:`<button class="btn sec" onclick="go('cell-${D.cells[D.cells.length-1].id}')">← Last cell</button>`}${next?`<button class="btn" onclick="go('map-${next.id}')">Next →</button>`:`<button class="btn" onclick="go('solid')">Done — see what's solid →</button>`}</div></section>`; }
 function render(){
   // nav
@@ -179,19 +186,23 @@ function render(){
   D.bands.forEach(([bid,bname])=>{ const cs=D.cells.filter(c=>c.band===bid); if(!cs.length)return; nav+=`<div class="grp sub2">${esc(bname)}</div>`+cs.map(c=>`<a class="nav cell" data-view="cell-${c.id}" href="#cell-${c.id}"><span class="b">${esc(c.code.replace(/[^0-9QN]/g,'').slice(0,3)||'•')}</span>${esc(c.code)} · ${esc(c.label)}</a>`).join(''); });
   nav+=`<div class="prog" id="prog"><span>0 answered</span><div class="bar"><i></i></div></div>`;
   nav+=`<div class="grp">Mapping proposal (${D.decisions.length})</div>`;
-  D.mapgroups.forEach(([gid,gname])=>{ const dd=D.decisions.filter(d=>d.group===gid); if(!dd.length)return; nav+=`<div class="grp sub2">${esc(gname)}</div>`+dd.map(d=>`<a class="nav cell" data-view="map-${d.id}" href="#map-${d.id}"><span class="b">${esc(d.id.replace(/[^0-9]/g,'')||'•')}</span>${esc(d.id)} · ${esc(d.title.replace(/^[^·]*·\s*/,'').slice(0,52))}</a>`).join(''); });
+  D.mapgroups.forEach(([gid,gname])=>{ const dd=D.decisions.filter(d=>d.group===gid); if(!dd.length)return; nav+=`<div class="grp sub2">${esc(gname)}</div>`+dd.map(d=>`<a class="nav cell${d.answered?' ruled':''}" data-view="map-${d.id}" href="#map-${d.id}"><span class="b">${d.answered?'✓':esc(d.id.replace(/[^0-9]/g,'')||'•')}</span>${esc(d.id)} · ${esc(d.title.replace(/^[^·]*·\s*/,'').slice(0,52))}</a>`).join(''); });
   nav+=`<div class="grp">Reference</div>`;
   D.sections.slice(3).forEach(([id,name,desc])=>{ nav+=`<a class="nav" data-view="${id}" href="#${id}">${esc(name)}<span class="d">${esc(desc)}</span></a>`; });
   $('#nav').innerHTML=nav;
   // views
   let v=`<section class="view" id="v-start"><h2>Start here</h2><div class="card">
   <p><b>What this is.</b> A top-to-bottom transcription of our built <b>Computation of Income</b> screen (<code>${esc(D.meta.screen)}</code>) — one card per line the preparer sees, in render order, with the exact logic behind each cell and a real screenshot to point at. It is built from the code we ship (build ${esc(D.meta.build)}), not a prototype. Your job: for each cell, say whether the logic is <b>right</b>, where it should <b>come from</b>, and whether it should be <b>read-only or editable</b>.</p>
+  <h3>Where things stand — updated 20-Aug</h3>
+  <div class="val ruled" style="margin:8px 0"><b>What we already know (fed in, nothing re-asked).</b> Your 17-18 Aug answers on the FTA-audit page became rulings and most are ALREADY BUILT: transitional excluded gains → computation (live) · Section-F feeds incl. QIF lines (live) · Qualifying-Group relief → C12 (live) · interest-cap inputs — income box, b/f + expired feed, bank/insurer gate (live) · TP upward auto-fill (building) · tax-loss formulas + QFZP split (ruled, building) · foreign-tax-credit per-stream cap (ruled, building) · S050 cumulative + rolling average (ruled). Decisions settled by those answers are marked <b>green ✓</b> in the left index — they need nothing from you.</div>
+  <div class="val upd" style="margin:8px 0"><b>What we still need (the progress bar counts only these).</b> The 30 per-cell verdicts below, the still-open mapping decisions (equity-method, partnership and realisation-basis destinations · the QG #18 record · shipping double-surface · PE/FPE loss questions · UGL home · the Free-Zone sign map), and three NEW items from building your answers: <b>N-1</b> interest-cap day-count + first-year opening balances · <b>N-2</b> the Tax Loss Relief sheet presentation · <b>N-3</b> three feed signs to eyeball on the test portal.</div>
+  <p class="small muted">The screenshots are from the 16-Aug build; the screen has since been reworked to your BRD shape (banners removed, the nine template notes render under the table, extract in the bottom bar) and the new QIF lines are not pictured — each affected card carries an amber "Since 16-Aug" note with what changed.</p>
   <h3>The three questions on every cell</h3>
   <div class="blk"><div class="k">1 · Correct?</div><div class="val">Is the logic behind the cell right — or wrong (say how)?</div>
   <div class="k">2 · Should come from?</div><div class="val">Where should the number originate — keep it as-is, a named schedule, or a specific return line?</div>
   <div class="k">3 · Read-only or editable?</div><div class="val">Should the preparer be able to type here — read-only (owned upstream), editable and pre-filled, or editable and blank?</div></div>
   <p class="small muted">Two chips you'll see: <span class="chip ro">Read-only</span> the number lives in one upstream place and can't be typed here · <span class="chip ed">Editable</span> you can type / overtype (pre-filled cells show an amber "schedule says X · Restore" strip when you override). "Class A/B/C", "seed", "feed", "gate" are all in the Glossary.</p>
-  <h3>How to use this page</h3><p>Use the left index — it mirrors the screen's own order (Income &amp; accounting base → Add-backs → Deductions &amp; reliefs → Taxable income &amp; tax → the on-screen extras), then the <b>mapping proposal</b> (28 questions about auto-capturing return figures into the computation), then the reference sections. Answer in place, add a line if you like, click <b>Save answer</b>. The progress bar on the left counts answered cells + decisions. Nothing is built until you have answered and Mayuresh confirms.</p>
+  <h3>How to use this page</h3><p>Use the left index — it mirrors the screen's own order (Income &amp; accounting base → Add-backs → Deductions &amp; reliefs → Taxable income &amp; tax → the on-screen extras), then the <b>mapping proposal</b> (the auto-capture decisions — green ✓ ones are already ruled and need nothing), then the reference sections. Answer in place, add a line if you like, click <b>Save answer</b>. The progress bar on the left counts answered cells + decisions. Nothing is built until you have answered and Mayuresh confirms.</p>
   ${D.allimgs.length?`<h3>The screens we captured (real stack)</h3><p class="small muted">Full-page shots and per-band crops of our built Computation screen, plus the Return steps the figures come from — a fresh migrated database, the seeded Primary logged in through the real UI, zero injected data. Click any to zoom.</p>${thumbs(D.allimgs)}`:''}
   <div class="banner">Nothing here has been actioned. These annotations become rulings or build items only after your review. Where a line's destination is genuinely unpinned it is marked UNKNOWN — no cell was invented.</div>
   <div class="pager"><span></span><button class="btn" onclick="go('cell-${D.cells[0].id}')">Start with ${esc(D.cells[0].code)} →</button></div></div></section>`;
